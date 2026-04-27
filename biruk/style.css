@@ -1,0 +1,83 @@
+/* =========================
+   CLUB PAGE SPECIFIC STYLES
+   ========================= */
+
+.club-container {
+  padding-top: 2rem;
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+}
+
+.p-main {
+  padding: 2rem;
+}
+
+/* Header & Tabs */
+.header-content {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 2rem 2rem 1rem 2rem;
+}
+
+.tab-navigation {
+  display: flex;
+  padding: 0 2rem 1rem 2rem;
+  gap: 1.5rem;
+}
+
+.tab-link {
+  background: transparent;
+  color: var(--color-text-muted);
+  font-weight: 500;
+  transition: 0.3s;
+  padding-bottom: 0.5rem;
+}
+
+.tab-link:hover {
+  color: var(--color-primary);
+}
+
+/* Forms & Inputs */
+.input-group {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  margin-top: 1rem;
+}
+
+.dark-input {
+  background-color: var(--color-bg-main);
+  color: var(--color-text-main);
+  padding: 0.8rem 1.2rem;
+  border-radius: 0.75rem;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  width: 100%;
+}
+
+.dark-input:focus {
+  border-color: var(--color-primary);
+}
+
+textarea.dark-input {
+  min-height: 100px;
+  resize: none;
+}
+
+/* Feed & Posts */
+.feed-creator {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  gap: 1rem;
+}
+
+/* Join Button State (Logic in handleJoin) */
+#join-btn:disabled {
+  background-color: var(--color-bg-main);
+  color: var(--color-text-muted);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  cursor: not-allowed;
+  opacity: 1; /* Override hover opacity */
+}
