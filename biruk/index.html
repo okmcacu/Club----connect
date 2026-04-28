@@ -3,50 +3,36 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Club Connect | Clubs Directory</title>
-
-    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-
+    <title>Club Connect | Explore</title>
     <link rel="stylesheet" href="style.css" />
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
   </head>
   <body>
-    <div class="container">
-      <nav>
-        <h2>🏆 CLUB CONNECT</h2>
-        <div class="nav-links">
-          <a
-            href="#"
-            onclick="
-              showAllClubs();
-              return false;
-            "
-            >Home</a
-          >
-          <a
-            href="#"
-            class="active"
-            onclick="
-              showAllClubs();
-              return false;
-            "
-            >Clubs</a
-          >
-          <a
-            href="#"
-            onclick="
-              showMyClubs();
-              return false;
-            "
-            >My Clubs</a
-          >
+    <nav class="navbar">
+      <div class="nav-container">
+        <div class="logo">
+          CLUB <span class="logo-highlight">--CONNECT</span>
         </div>
-      </nav>
-
-      <div id="main-content">
-        <!-- Clubs grid will be loaded here -->
+        <div class="nav-links">
+          <a href="#">Home</a>
+          <a href="#" class="active">Clubs</a>
+          <a href="#">My Clubs</a>
+          <a href="#">Events</a>
+          <a href="#">My Events</a>
+          <a href="#">Markets</a>
+          <a href="#">Wishlist</a>
+        </div>
+        <div class="profile-section">
+          <div class="profile-icon">👤</div>
+          <span>Profile</span>
+        </div>
       </div>
-    </div>
-
+    </nav>
+    <main class="main-content">
+      <h1 class="page-title" id="pageTitle">Explore Communities</h1>
+      <div id="clubGrid" class="grid"></div>
+    </main>
     <script src="script.js"></script>
   </body>
 </html>
