@@ -1,74 +1,122 @@
-<div class="container club-container">
-  <header class="club-header card">
-    <div class="header-content">
-      <h1>Club Name</h1>
-      <button
-        id="join-btn"
-        class="btn-primary"
-        onclick="handleJoin('club_id', 'user_id')"
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Club Connect | Details</title>
+
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+
+    <link rel="stylesheet" href="base.css" />
+
+    <link rel="stylesheet" href="style.css" />
+  </head>
+  <body>
+    <div class="container">
+      <nav
+        style="
+          display: flex;
+          justify-content: space-between;
+          padding: 2rem 0;
+          align-items: center;
+        "
       >
-        Join Club
-      </button>
-    </div>
+        <h2 style="color: var(--color-primary); font-weight: 700">
+          CLUB --CONNECT
+        </h2>
+        <div style="display: flex; gap: 1.5rem; color: var(--color-text-muted)">
+          <a href="#">Home</a>
+          <a href="#" style="color: var(--color-text-main)">Clubs</a>
+          <a href="#">My Clubs</a>
+          <a href="#">Events</a>
+        </div>
+      </nav>
 
-    <nav class="tab-navigation">
-      <button class="tab-link" onclick="showTab('description')">About</button>
-      <button class="tab-link" onclick="showTab('events')">Events</button>
-      <button class="tab-link" onclick="showTab('feed')">Feed</button>
-    </nav>
-  </header>
-
-  <main class="club-content">
-    <div id="description-tab" class="tab-pane">
-      <div class="card p-main">
-        <p>Welcome to the club description area.</p>
-      </div>
-    </div>
-
-    <div id="events-tab" class="tab-pane" style="display: none">
-      <div class="card p-main">
-        <h3>Schedule New Event</h3>
-        <div class="input-group">
-          <input
-            type="text"
-            id="event-title"
-            placeholder="Event Title"
-            class="dark-input"
-          />
-          <input type="datetime-local" id="event-date" class="dark-input" />
+      <header
+        class="club-header card"
+        style="padding: 2rem; margin-bottom: 1.5rem"
+      >
+        <div
+          style="
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+          "
+        >
+          <h1 id="club-name">Club Name</h1>
           <button
-            class="btn-primary"
-            onclick="
-              createEvent(
-                'club_id',
-                document.getElementById('event-title').value,
-                document.getElementById('event-date').value,
-              )
-            "
+            id="join-btn"
+            class="btn-primary hover-lift"
+            onclick="handleJoin()"
           >
-            Create Event
+            Join Club
           </button>
         </div>
-      </div>
+
+        <nav class="tab-navigation">
+          <button
+            class="tab-link active"
+            onclick="showTab('description', this)"
+          >
+            About
+          </button>
+          <button class="tab-link" onclick="showTab('events', this)">
+            Events
+          </button>
+          <button class="tab-link" onclick="showTab('feed', this)">Feed</button>
+        </nav>
+      </header>
+
+      <main class="club-content">
+        <div id="description-tab" class="tab-pane">
+          <div class="card" style="padding: 2rem">
+            <p style="color: var(--color-text-muted)">
+              Welcome to the club description area. Mission statements and
+              details go here.
+            </p>
+          </div>
+        </div>
+
+        <div id="events-tab" class="tab-pane" style="display: none">
+          <div class="card" style="padding: 2rem">
+            <h3 style="margin-bottom: 1rem">Schedule New Event</h3>
+            <input
+              type="text"
+              id="event-title"
+              placeholder="Event Title"
+              class="dark-input"
+            />
+            <input type="datetime-local" id="event-date" class="dark-input" />
+            <button class="btn-primary hover-lift" onclick="createEvent()">
+              Create Event
+            </button>
+          </div>
+          <div class="card" style="padding: 2rem">
+            <h4>Upcoming Events</h4>
+            <div id="events-display"></div>
+          </div>
+        </div>
+
+        <div id="feed-tab" class="tab-pane" style="display: none">
+          <div class="card" style="padding: 2rem">
+            <textarea
+              id="post-input"
+              placeholder="What's happening?"
+              class="dark-input"
+              style="height: 100px; resize: none"
+            ></textarea>
+            <button class="btn-primary hover-lift" onclick="createPost()">
+              Post
+            </button>
+          </div>
+          <div class="card" style="padding: 2rem">
+            <h4>Recent Activity</h4>
+            <div id="posts-display"></div>
+          </div>
+        </div>
+      </main>
     </div>
 
-    <div id="feed-tab" class="tab-pane" style="display: none">
-      <div class="card p-main">
-        <div class="feed-creator">
-          <textarea
-            id="post-input"
-            placeholder="What's happening?"
-            class="dark-input"
-          ></textarea>
-          <button
-            class="btn-primary"
-            onclick="createPost('user_id', 'club_id')"
-          >
-            Post
-          </button>
-        </div>
-      </div>
-      <div id="feed-container"></div>
-    </div>
-  </main>
-</div>
+    <script src="script.js"></script>
+  </body>
+</html>
