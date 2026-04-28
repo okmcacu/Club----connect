@@ -3,118 +3,48 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Club Connect | Details</title>
+    <title>Club Connect | Clubs Directory</title>
 
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-
-    <link rel="stylesheet" href="base.css" />
 
     <link rel="stylesheet" href="style.css" />
   </head>
   <body>
     <div class="container">
-      <nav
-        style="
-          display: flex;
-          justify-content: space-between;
-          padding: 2rem 0;
-          align-items: center;
-        "
-      >
-        <h2 style="color: var(--color-primary); font-weight: 700">
-          CLUB --CONNECT
-        </h2>
-        <div style="display: flex; gap: 1.5rem; color: var(--color-text-muted)">
-          <a href="#">Home</a>
-          <a href="#" style="color: var(--color-text-main)">Clubs</a>
-          <a href="#">My Clubs</a>
-          <a href="#">Events</a>
+      <nav>
+        <h2>🏆 CLUB CONNECT</h2>
+        <div class="nav-links">
+          <a
+            href="#"
+            onclick="
+              showAllClubs();
+              return false;
+            "
+            >Home</a
+          >
+          <a
+            href="#"
+            class="active"
+            onclick="
+              showAllClubs();
+              return false;
+            "
+            >Clubs</a
+          >
+          <a
+            href="#"
+            onclick="
+              showMyClubs();
+              return false;
+            "
+            >My Clubs</a
+          >
         </div>
       </nav>
 
-      <header
-        class="club-header card"
-        style="padding: 2rem; margin-bottom: 1.5rem"
-      >
-        <div
-          style="
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-          "
-        >
-          <h1 id="club-name">Club Name</h1>
-          <button
-            id="join-btn"
-            class="btn-primary hover-lift"
-            onclick="handleJoin()"
-          >
-            Join Club
-          </button>
-        </div>
-
-        <nav class="tab-navigation">
-          <button
-            class="tab-link active"
-            onclick="showTab('description', this)"
-          >
-            About
-          </button>
-          <button class="tab-link" onclick="showTab('events', this)">
-            Events
-          </button>
-          <button class="tab-link" onclick="showTab('feed', this)">Feed</button>
-        </nav>
-      </header>
-
-      <main class="club-content">
-        <div id="description-tab" class="tab-pane">
-          <div class="card" style="padding: 2rem">
-            <p style="color: var(--color-text-muted)">
-              Welcome to the club description area. Mission statements and
-              details go here.
-            </p>
-          </div>
-        </div>
-
-        <div id="events-tab" class="tab-pane" style="display: none">
-          <div class="card" style="padding: 2rem">
-            <h3 style="margin-bottom: 1rem">Schedule New Event</h3>
-            <input
-              type="text"
-              id="event-title"
-              placeholder="Event Title"
-              class="dark-input"
-            />
-            <input type="datetime-local" id="event-date" class="dark-input" />
-            <button class="btn-primary hover-lift" onclick="createEvent()">
-              Create Event
-            </button>
-          </div>
-          <div class="card" style="padding: 2rem">
-            <h4>Upcoming Events</h4>
-            <div id="events-display"></div>
-          </div>
-        </div>
-
-        <div id="feed-tab" class="tab-pane" style="display: none">
-          <div class="card" style="padding: 2rem">
-            <textarea
-              id="post-input"
-              placeholder="What's happening?"
-              class="dark-input"
-              style="height: 100px; resize: none"
-            ></textarea>
-            <button class="btn-primary hover-lift" onclick="createPost()">
-              Post
-            </button>
-          </div>
-          <div class="card" style="padding: 2rem">
-            <h4>Recent Activity</h4>
-            <div id="posts-display"></div>
-          </div>
-        </div>
-      </main>
+      <div id="main-content">
+        <!-- Clubs grid will be loaded here -->
+      </div>
     </div>
 
     <script src="script.js"></script>
