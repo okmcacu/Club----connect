@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>ClubConnect | Events List</title>
+    <link rel="stylesheet" href="base.css">
+    <style>
+        /* Navbar Specific Styling to match Image 7 */
+        .navbar {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 1.5rem 0;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+        }
+        .logo { font-weight: 800; font-size: 1.2rem; letter-spacing: 1px; }
+        .logo .club { color: #ffffff; }
+        .logo .connect { color: var(--color-primary); }
+        
+        .nav-links { 
+            display: flex; 
+            gap: 1.5rem; 
+            list-style: none; 
+            margin: 0; 
+            padding: 0; 
+        }
+        .nav-links a { 
+            color: #ffffff; 
+            font-size: 0.85rem; 
+            font-weight: 500; 
+            opacity: 0.7;
+            transition: opacity 0.3s;
+        }
+        .nav-links a:hover, .nav-links a.active { opacity: 1; color: var(--color-primary); }
+
+        .profile-area {
+            display: flex;
+            align-items: center;
+            gap: 0.8rem;
+            background: var(--color-bg-secondary);
+            padding: 0.4rem 1rem;
+            border-radius: 50px;
+            border: 1px solid rgba(255,255,255,0.1);
+        }
+        .profile-icon {
+            background: var(--color-primary);
+            color: black;
+            width: 24px;
+            height: 24px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 0.7rem;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+
+        <nav class="navbar">
+            <div class="logo">
+                <span class="club">CLUB</span><span class="connect"> --CONNECT</span>
+            </div>
+
+            <ul class="nav-links">
+                <li><a href="#">Home</a></li>
+                <li><a href="#">Clubs</a></li>
+                <li><a href="#">My Clubs</a></li>
+                <li><a href="events.html" class="active">Events</a></li>
+                <li><a href="myevents.html">My Events</a></li>
+                <li><a href="#">Markets</a></li>
+                <li><a href="#">Wishlist</a></li>
+            </ul>
+
+            <div class="profile-area">
+                <div class="profile-icon">👤</div>
+                <span style="font-size: 0.8rem; font-weight: 600;">Profile</span>
+            </div>
+        </nav>
+
+        <header style="padding: 4rem 0 2rem 0;">
+            <h1 style="font-size: 2.5rem; font-weight: 700;">Explore Events</h1>
+            <p style="color: var(--color-text-muted);">Discover and join upcoming club activities</p>
+        </header>
+
+        <div id="events-grid" style="display: grid; grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); gap: 2rem; margin-bottom: 5rem;">
+            <p>Loading events...</p>
+        </div>
+
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <script>
+        const _supabase = supabase.createClient(
+            'https://wsbzipduafiuwqvmjjxi.supabase.co',
+            'sb_publishable_WvATkOwadGEY59I3gfn8Tw_vA5wpiM0'
+        );
+
+        async function getEvents() {
+            // Fetching event_id, club_id, title, etc from Store
+            const { data, error } = await _supabase.from('Events').select('*');
+            const grid = document.getElementById('events-grid');
+            grid.innerHTML = '';
+
+            if (error) {
+                grid.innerHTML = '<p>Error loading events.</p>';
+                return;
+            }
+
+            data.forEach(event => {
+                grid.innerHTML += `
+                    <a href="eventdetails.html?id=${event.id}" class="card hover-lift">
+                        <img src="${event.image_url || 'https://via.placeholder.com/400x200'}" style="width:100%; height:200px; object-fit:cover;">
+                        <div style="padding: 1.5rem;">
+                            <p style="color: var(--color-primary); font-size: 0.8rem; font-weight: 600; text-transform: uppercase;">${event.organizer || 'Club'}</p>
+                            <h3 style="margin: 0.5rem 0; font-size: 1.25rem;">${event.title}</h3>
+                            <p style="color: var(--color-text-muted); font-size: 0.9rem; line-height: 1.4;">${event.mini_description || ''}</p>
+                            <div style="margin-top: 1.5rem; display: flex; align-items: center; gap: 0.5rem; font-size: 0.8rem; color: var(--color-text-muted);">
+                                <span>📅 ${event.date}</span>
+                                <span>•</span>
+                                <span>⏰ ${event.time}</span>
+                            </div>
+                        </div>
+                    </a>`;
+            });
+        }
+
+        getEvents();
+    </script>
+</body>
+</html>

@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Club Connect Navbar Demo</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body class="bg-zinc-950 text-white">
+
+    <!-- NAVBAR -->
+    <nav class="bg-zinc-900 border-b border-zinc-800">
+        <div class="max-w-7xl mx-auto px-6">
+            <div class="flex items-center justify-between h-16">
+
+                <!-- LEFT: LOGO -->
+                <div class="flex items-center gap-2 text-2xl font-bold">
+                    <span>CLUB</span>
+                    <span class="text-emerald-400">--CONNECT</span>
+                </div>
+
+                <!-- CENTER: NAV LINKS -->
+                <div class="hidden md:flex items-center gap-8 text-sm font-medium">
+                    <a href="#" class="hover:text-emerald-400 transition">Home</a>
+                    <a href="#" class="hover:text-emerald-400 transition">Clubs</a>
+                    <a href="#" class="hover:text-emerald-400 transition">My Clubs</a>
+                    <a href="#" class="hover:text-emerald-400 transition">Events</a>
+                    <a href="#" class="hover:text-emerald-400 transition">My Events</a>
+                    <a href="#" class="hover:text-emerald-400 transition">Markets</a>
+                    <a href="#" class="hover:text-emerald-400 transition">Wishlist</a>
+                </div>
+
+                <!-- RIGHT: PROFILE -->
+                <div class="flex items-center gap-3 cursor-pointer">
+                    <div class="w-9 h-9 bg-gradient-to-br from-emerald-400 to-cyan-400 rounded-2xl flex items-center justify-center">
+                        👤
+                    </div>
+                    <span class="hidden sm:block text-sm font-semibold">Profile</span>
+                </div>
+
+            </div>
+        </div>
+    </nav>
+
+    <!-- DEMO CONTENT -->
+    <section class="flex items-center justify-center h-[80vh] text-center">
+        <div>
+            <h1 class="text-5xl font-bold mb-6">Navbar Preview</h1>
+            <p class="text-zinc-400 text-lg">
+                This is how the navigation bar should look across all pages.
+            </p>
+        </div>
+    </section>
+
+</body>
+</html>

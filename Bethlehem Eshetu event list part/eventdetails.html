@@ -1,0 +1,158 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ClubConnect | Event Details</title>
+    <link rel="stylesheet" href="base.css">
+
+    <style>
+        /* Luxury Navbar - Matching your screenshot */
+        .navbar {
+            background-color: #0a0a0a;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+            padding: 1.1rem 0;
+        }
+        .nav-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 1.5rem;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+        .logo {
+            font-size: 1.65rem;
+            font-weight: 700;
+            letter-spacing: -0.5px;
+        }
+        .logo .club { color: #ffffff; }
+        .logo .connect { color: var(--color-primary); }
+
+        .nav-links {
+            display: flex;
+            gap: 2.1rem;
+            list-style: none;
+            margin: 0;
+            padding: 0;
+        }
+        .nav-links a {
+            color: #e5e5e5;
+            font-weight: 500;
+            text-decoration: none;
+            transition: color 0.3s ease;
+            font-size: 0.95rem;
+        }
+        .nav-links a:hover,
+        .nav-links a.active {
+            color: var(--color-primary);
+        }
+
+        .profile-area {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            color: #e5e5e5;
+            font-weight: 500;
+        }
+        .profile-icon {
+            width: 36px;
+            height: 36px;
+            background: var(--color-primary);
+            color: #000;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.1rem;
+            font-weight: 700;
+        }
+
+        /* Event Details Luxury Styling */
+        .event-hero {
+            width: 100%;
+            height: 420px;
+            object-fit: cover;
+            border-radius: var(--radius-main);
+            margin-bottom: 2.5rem;
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.6);
+        }
+
+        .event-content {
+            max-width: 900px;
+            margin: 0 auto;
+        }
+
+        .event-title {
+            font-size: 3rem;
+            font-weight: 700;
+            line-height: 1.1;
+            margin-bottom: 1.25rem;
+        }
+
+        .event-meta {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 2rem;
+            color: var(--color-text-muted);
+            font-size: 1.05rem;
+            margin-bottom: 3rem;
+            padding-bottom: 2rem;
+            border-bottom: 1px solid rgba(255,255,255,0.08);
+        }
+
+        .detail-card {
+            background: var(--color-bg-secondary);
+            border-radius: var(--radius-main);
+            padding: 2.5rem;
+            border: 1px solid rgba(255,255,255,0.05);
+        }
+
+        .btn-add {
+            font-size: 1.15rem;
+            padding: 1.1rem 2.8rem;
+            border-radius: 9999px;
+            font-weight: 600;
+            letter-spacing: 0.5px;
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Luxury Navbar -->
+    <nav class="navbar">
+        <div class="nav-container">
+            <div class="logo">
+                <span class="club">CLUB</span><span class="connect"> --CONNECT</span>
+            </div>
+
+            <ul class="nav-links">
+                <li><a href="#">Home</a></li>
+                <li><a href="#">Clubs</a></li>
+                <li><a href="#">My Clubs</a></li>
+                <li><a href="events.html" class="active">Events</a></li>
+                <li><a href="myevents.html">My Events</a></li>
+                <li><a href="#">Markets</a></li>
+                <li><a href="#">Wishlist</a></li>
+            </ul>
+
+            <div class="profile-area">
+                <div class="profile-icon">👤</div>
+                <span>Profile</span>
+            </div>
+        </div>
+    </nav>
+
+<div id="detail-card" style="margin-top: 3rem; margin-bottom: 5rem;">
+    <!-- This will be replaced by JavaScript -->
+    <p style="color: var(--color-text-muted); text-align: center;">Loading event details...</p>
+</div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <script src="app.js"></script>
+</body>
+</html>

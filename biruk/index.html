@@ -1,0 +1,74 @@
+<div class="container club-container">
+  <header class="club-header card">
+    <div class="header-content">
+      <h1>Club Name</h1>
+      <button
+        id="join-btn"
+        class="btn-primary"
+        onclick="handleJoin('club_id', 'user_id')"
+      >
+        Join Club
+      </button>
+    </div>
+
+    <nav class="tab-navigation">
+      <button class="tab-link" onclick="showTab('description')">About</button>
+      <button class="tab-link" onclick="showTab('events')">Events</button>
+      <button class="tab-link" onclick="showTab('feed')">Feed</button>
+    </nav>
+  </header>
+
+  <main class="club-content">
+    <div id="description-tab" class="tab-pane">
+      <div class="card p-main">
+        <p>Welcome to the club description area.</p>
+      </div>
+    </div>
+
+    <div id="events-tab" class="tab-pane" style="display: none">
+      <div class="card p-main">
+        <h3>Schedule New Event</h3>
+        <div class="input-group">
+          <input
+            type="text"
+            id="event-title"
+            placeholder="Event Title"
+            class="dark-input"
+          />
+          <input type="datetime-local" id="event-date" class="dark-input" />
+          <button
+            class="btn-primary"
+            onclick="
+              createEvent(
+                'club_id',
+                document.getElementById('event-title').value,
+                document.getElementById('event-date').value,
+              )
+            "
+          >
+            Create Event
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <div id="feed-tab" class="tab-pane" style="display: none">
+      <div class="card p-main">
+        <div class="feed-creator">
+          <textarea
+            id="post-input"
+            placeholder="What's happening?"
+            class="dark-input"
+          ></textarea>
+          <button
+            class="btn-primary"
+            onclick="createPost('user_id', 'club_id')"
+          >
+            Post
+          </button>
+        </div>
+      </div>
+      <div id="feed-container"></div>
+    </div>
+  </main>
+</div>
