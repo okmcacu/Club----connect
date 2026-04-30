@@ -1,0 +1,18 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Your Wishlist</title>
+    <link rel="stylesheet" href="base.css">
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+</head>
+<body>
+    <nav><!-- Same Navbar --></nav>
+    <div class="nav-container">
+        <h1 style="margin-top: 3rem;">My <span style="color: var(--color-primary)">Wishlist</span></h1>
+        <div id="wishlist-list" class="market-grid"></div>
+    </div>
+    <script src="market-script.js"></script>
+    <script>document.addEventListener('DOMContentLoaded', displayWishlist);</script>
+</body>
+</html>
