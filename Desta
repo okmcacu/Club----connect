@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Add Market Item</title>
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <style>
+        body { font-family: -apple-system, sans-serif; max-width: 700px; margin: 40px auto; padding: 20px; background: #f8f9fa; }
+        .form-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 15px; background: white; padding: 30px; border-radius: 12px; box-shadow: 0 4px 20px rgba(0,0,0,0.08); }
+        .field { display: flex; flex-direction: column; }
+        .full { grid-column: span 2; }
+        label { font-weight: 600; font-size: 0.85rem; margin-bottom: 6px; color: #444; }
+        input, textarea, select { padding: 12px; border: 1px solid #ddd; border-radius: 8px; font-size: 1rem; }
+        button { grid-column: span 2; padding: 16px; background: #3ecf8e; color: white; border: none; border-radius: 8px; cursor: pointer; font-weight: bold; font-size: 1rem; margin-top: 10px; }
+        button:disabled { background: #ccc; }
+    </style>
+</head>
+<body>
+    <h2 style="text-align: center;">New Marketplace Listing</h2>
+    <form id="marketForm" class="form-grid">
+        <div class="field full"><label>Product Title</label><input type="text" id="title" required></div>
+        <div class="field full"><label>Short Description (Centered Header)</label><input type="text" id="short_description"></div>
+        <div class="field full"><label>Full Description (Markdown)</label><textarea id="description" rows="3"></textarea></div>
+        
+        <div class="field"><label>Price ($)</label><input type="number" id="price" step="0.01"></div>
+        <div class="field"><label>Quantity</label><input type="number" id="quantity" value="1"></div>
+        
+        <div class="field">
+            <label>Condition</label>
+            <select id="condition">
+                <option>New</option>
+                <option>Used - Like New</option>
+                <option>Used - Good</option>
+                <option>Used - Fair</option>
+            </select>
+        </div>
+        <div class="field">
+            <label>Status</label>
+            <select id="status">
+                <option value="active">Active</option>
+                <option value="sold">Sold</option>
+                <option value="pending">Pending</option>
+            </select>
+        </div>
+
+        <div class="field"><label>Seller Name</label><input type="text" id="seller_name"></div>
+        <div class="field">
+            <label>Verified Seller?</label>
+            <select id="verified">
+                <option value="no">No</option>
+                <option value="yes">Yes</option>
+            </select>
+        </div>
+
+        <div class="field"><label>Phone Number</label><input type="text" id="phone"></div>
+        <div class="field"><label>Category</label><input type="text" id="category"></div>
+        
+        <div class="field full"><label>Address / Location</label><input type="text" id="address"></div>
+
+        <div class="field"><label>Main Image</label><input type="file" id="img1" accept="image/*"></div>
+        <div class="field"><label>Secondary Image</label><input type="file" id="img2" accept="image/*"></div>
+        
+        <button type="submit" id="submitBtn">Post Listing</button>
+    </form>
+
+    <script>
+        const _supabase = supabase.createClient("https://wsbzipduafiuwqvmjjxi.supabase.co", "sb_publishable_WvATkOwadGEY59I3gfn8Tw_vA5wpiM0");
+
+        async function upload(file) {
+            if (!file) return null;
+            const name = `${Date.now()}-${file.name.replace(/\s+/g, '_')}`;
+            await _supabase.storage.from('Market').upload(name, file);
+            return _supabase.storage.from('Market').getPublicUrl(name).data.publicUrl;
+        }
+
+        document.getElementById('marketForm').addEventListener('submit', async (e) => {
+            e.preventDefault();
+            const btn = document.getElementById('submitBtn');
+            btn.disabled = true;
+
+            try {
+                const url1 = await upload(document.getElementById('img1').files[0]);
+                const url2 = await upload(document.getElementById('img2').files[0]);
+
+                const { error } = await _supabase.from('Market').insert([{
+                    title: document.getElementById('title').value,
+                    short_description: document.getElementById('short_description').value,
+                    description: document.getElementById('description').value,
+                    price: parseFloat(document.getElementById('price').value) || 0,
+                    quantity: parseInt(document.getElementById('quantity').value) || 1,
+                    condition: document.getElementById('condition').value,
+                    status: document.getElementById('status').value,
+                    seller_name: document.getElementById('seller_name').value,
+                    verified: document.getElementById('verified').value,
+                    phone: document.getElementById('phone').value,
+                    category: document.getElementById('category').value,
+                    address: document.getElementById('address').value,
+                    image_urls: url1,
+                    image2_urls: url2 ? [url2] : null
+                }]);
+
+                if (error) throw error;
+                alert("Listing successful!");
+                e.target.reset();
+            } catch (err) { alert(err.message); } finally { btn.disabled = false; }
+        });
+    </script>
+</body>
+</html>
