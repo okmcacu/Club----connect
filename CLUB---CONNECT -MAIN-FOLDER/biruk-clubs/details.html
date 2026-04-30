@@ -1,0 +1,31 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Club Details | Club Connect</title>
+    <link rel="stylesheet" href="style.css" />
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
+  </head>
+  <body class="details-view">
+    <nav class="navbar">
+      <div class="nav-container">
+        <div class="logo">
+          <a href="index.html" style="text-decoration: none; color: inherit">
+            CLUB <span class="logo-highlight">--CONNECT</span>
+          </a>
+        </div>
+        <div class="nav-links">
+          <a href="index.html">← Back to Explore</a>
+        </div>
+      </div>
+    </nav>
+
+    <main id="detailsContainer" class="main-content">
+      <div class="loading">Fetching community details...</div>
+    </main>
+
+    <script src="details.js"></script>
+  </body>
+</html>
