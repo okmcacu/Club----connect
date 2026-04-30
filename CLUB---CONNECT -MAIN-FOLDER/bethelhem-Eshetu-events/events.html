@@ -4,8 +4,8 @@
     <meta charset="UTF-8">
     <title>ClubConnect | Events List</title>
     <link rel="stylesheet" href="base.css">
+    <script src="https://cdn.tailwindcss.com"></script>
     <style>
-        /* Navbar Specific Styling to match Image 7 */
         .navbar {
             display: flex;
             align-items: center;
@@ -15,7 +15,7 @@
         }
         .logo { font-weight: 800; font-size: 1.2rem; letter-spacing: 1px; }
         .logo .club { color: #ffffff; }
-        .logo .connect { color: var(--color-primary); }
+        .logo .connect { color: #34d399; }
         
         .nav-links { 
             display: flex; 
@@ -31,19 +31,19 @@
             opacity: 0.7;
             transition: opacity 0.3s;
         }
-        .nav-links a:hover, .nav-links a.active { opacity: 1; color: var(--color-primary); }
+        .nav-links a:hover, .nav-links a.active { opacity: 1; color: #34d399; }
 
         .profile-area {
             display: flex;
             align-items: center;
             gap: 0.8rem;
-            background: var(--color-bg-secondary);
+            background: #18181b;
             padding: 0.4rem 1rem;
             border-radius: 50px;
             border: 1px solid rgba(255,255,255,0.1);
         }
         .profile-icon {
-            background: var(--color-primary);
+            background: #34d399;
             color: black;
             width: 24px;
             height: 24px;
@@ -55,8 +55,8 @@
         }
     </style>
 </head>
-<body>
-    <div class="container">
+<body class="bg-zinc-950 text-white">
+    <div class="max-w-7xl mx-auto px-6">
 
         <nav class="navbar">
             <div class="logo">
@@ -64,15 +64,13 @@
             </div>
 
             <ul class="nav-links">
-                
-       <li><a href="index.html" class="text-emerald-400">Home</a></li>
-          <li><a href="CLUB---CONNECT -MAIN-FOLDER/biruk-clubs/index.html" class="hover:text-emerald-400 transition">Clubs</a></li>
-          <li><a href="#" class="hover:text-emerald-400 transition">My Clubs</a></li>
-       <li><a href="CLUB---CONNECT -MAIN-FOLDER/bethelhem-Eshetu-events/events.html" class="hover:text-emerald-400 transition">Events</a></li>
-          <li><a href="CLUB---CONNECT -MAIN-FOLDER/bethelhem-Eshetu-events/myevents.html" class="hover:text-emerald-400 transition">My Events</a></li>
-         <li><a href="CLUB---CONNECT -MAIN-FOLDER/bethelhem-sefiw-markets/index.html" class="hover:text-emerald-400 transition">Markets</a></li>
-        <li><a href="#" class="hover:text-emerald-400 transition">Wishlist</a>
-    
+                <li><a href="../../index.html">Home</a></li>
+                <li><a href="../biruk-clubs/index.html">Clubs</a></li>
+                <li><a href="#">My Clubs</a></li>
+                <li><a href="events.html" class="active">Events</a></li>
+                <li><a href="myevents.html">My Events</a></li>
+                <li><a href="../bethelhem-sefiw-markets/index.html">Markets</a></li>
+                <li><a href="#">Wishlist</a></li>
             </ul>
 
             <div class="profile-area">
@@ -83,7 +81,7 @@
 
         <header style="padding: 4rem 0 2rem 0;">
             <h1 style="font-size: 2.5rem; font-weight: 700;">Explore Events</h1>
-            <p style="color: var(--color-text-muted);">Discover and join upcoming club activities</p>
+            <p class="text-zinc-400">Discover and join upcoming club activities</p>
         </header>
 
         <div id="events-grid" style="display: grid; grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); gap: 2rem; margin-bottom: 5rem;">
@@ -100,7 +98,6 @@
         );
 
         async function getEvents() {
-            // Fetching event_id, club_id, title, etc from Store
             const { data, error } = await _supabase.from('Events').select('*');
             const grid = document.getElementById('events-grid');
             grid.innerHTML = '';
@@ -112,13 +109,13 @@
 
             data.forEach(event => {
                 grid.innerHTML += `
-                    <a href="eventdetails.html?id=${event.id}" class="card hover-lift">
+                    <a href="eventdetails.html?id=${event.id}" class="bg-zinc-900 rounded-2xl overflow-hidden border border-zinc-800 hover:border-emerald-500/50 transition-all">
                         <img src="${event.image_url || 'https://via.placeholder.com/400x200'}" style="width:100%; height:200px; object-fit:cover;">
                         <div style="padding: 1.5rem;">
-                            <p style="color: var(--color-primary); font-size: 0.8rem; font-weight: 600; text-transform: uppercase;">${event.organizer || 'Club'}</p>
+                            <p class="text-emerald-400" style="font-size: 0.8rem; font-weight: 600; text-transform: uppercase;">${event.organizer || 'Club'}</p>
                             <h3 style="margin: 0.5rem 0; font-size: 1.25rem;">${event.title}</h3>
-                            <p style="color: var(--color-text-muted); font-size: 0.9rem; line-height: 1.4;">${event.mini_description || ''}</p>
-                            <div style="margin-top: 1.5rem; display: flex; align-items: center; gap: 0.5rem; font-size: 0.8rem; color: var(--color-text-muted);">
+                            <p class="text-zinc-400" style="font-size: 0.9rem; line-height: 1.4;">${event.mini_description || ''}</p>
+                            <div style="margin-top: 1.5rem; display: flex; align-items: center; gap: 0.5rem; font-size: 0.8rem; color: #a1a1aa;">
                                 <span>📅 ${event.date}</span>
                                 <span>•</span>
                                 <span>⏰ ${event.time}</span>
