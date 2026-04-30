@@ -1,36 +1,37 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Club Connect</title>
-<link rel="stylesheet" href="styles.css">
+    <meta charset="UTF-8">
+    <title>Markets | Club Connect</title>
+    <link rel="stylesheet" href="base.css">
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 </head>
 <body>
-
-<!-- Navbar -->
-<header class="navbar">
-    <div class="logo">CLUB <span>--CONNECT</span></div>
-
-    <nav class="nav-links">
-        <a href="#" onclick="showHome()">Home</a>
-        <a href="#">Clubs</a>
-        <a href="#">My Clubs</a>
-        <a href="#">Events</a>
-        <a href="#">My Events</a>
-        <a href="#" onclick="showMarket()">Markets</a>
-        <a href="#" onclick="showWishlist()">Wishlist</a>
+    <nav>
+        <div class="nav-container">
+            <div style="font-weight: 800; font-size: 1.2rem;">CLUB <span style="color:var(--color-primary)">--CONNECT</span></div>
+            <div class="nav-links">
+                <a href="index.html">Home</a>
+                <a href="#">Clubs</a>
+                <a href="#">Events</a>
+                <a href="market.html" class="active">Markets</a>
+                <a href="wishlist.html">Wishlist</a>
+            </div>
+            <div class="profile-pill"><div class="avatar"></div><span>Profile</span></div>
+        </div>
     </nav>
 
-    <div class="profile">
-        <div class="profile-icon">👤</div>
-        <span>Profile</span>
+    <div class="container">
+        <header class="page-header">
+            <h1>Explore Market</h1>
+            <p style="color: var(--color-muted);">Discover resources with fellow AASTU students</p>
+        </header>
+        <div id="market-list" class="market-grid">
+            <!-- Data injected here -->
+        </div>
     </div>
-</header>
 
-<!-- Main Content -->
-<main id="app"></main>
-
-<script src="Script.js"></script>
+    <script src="market-script.js"></script>
+    <script>document.addEventListener('DOMContentLoaded', loadMarketItems);</script>
 </body>
 </html>
