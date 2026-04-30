@@ -2,100 +2,36 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Markets | Club Connect</title>
     <link rel="stylesheet" href="base.css">
-    <script src="https://cdn.tailwindcss.com"></script>
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-    <style>
-        .navbar {
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            padding: 1.5rem 0;
-            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
-        }
-        .logo { font-weight: 800; font-size: 1.2rem; letter-spacing: 1px; }
-        .logo .club { color: #ffffff; }
-        .logo .connect { color: #34d399; }
-        
-        .nav-links { 
-            display: flex; 
-            gap: 1.5rem; 
-            list-style: none; 
-            margin: 0; 
-            padding: 0; 
-        }
-        .nav-links a { 
-            color: #ffffff; 
-            font-size: 0.85rem; 
-            font-weight: 500; 
-            opacity: 0.7;
-            transition: opacity 0.3s;
-            text-decoration: none;
-        }
-        .nav-links a:hover, .nav-links a.active { opacity: 1; color: #34d399; }
-
-        .profile-pill {
-            display: flex;
-            align-items: center;
-            gap: 0.8rem;
-            background: #18181b;
-            padding: 0.4rem 1rem;
-            border-radius: 50px;
-            border: 1px solid rgba(255,255,255,0.1);
-        }
-        .avatar {
-            background: #34d399;
-            width: 24px;
-            height: 24px;
-            border-radius: 50%;
-        }
-    </style>
 </head>
-<body class="bg-zinc-950 text-white">
-    <div class="max-w-7xl mx-auto px-6">
-
-        <nav class="navbar">
-            <div class="logo">
-                <span class="club">CLUB</span><span class="connect"> --CONNECT</span>
+<body>
+    <nav>
+        <div class="nav-container">
+            <div style="font-weight: 800; font-size: 1.2rem;">CLUB <span style="color:var(--color-primary)">--CONNECT</span></div>
+            <div class="nav-links">
+                <a href="index.html">Home</a>
+                <a href="#">Clubs</a>
+                <a href="#">Events</a>
+                <a href="market.html" class="active">Markets</a>
+                <a href="wishlist.html">Wishlist</a>
             </div>
+            <div class="profile-pill"><div class="avatar"></div><span>Profile</span></div>
+        </div>
+    </nav>
 
-            <ul class="nav-links">
-                <li><a href="../../index.html">Home</a></li>
-                <li><a href="../biruk-clubs/index.html">Clubs</a></li>
-                <li><a href="#">My Clubs</a></li>
-                <li><a href="../bethelhem-Eshetu-events/events.html">Events</a></li>
-                <li><a href="../bethelhem-Eshetu-events/myevents.html">My Events</a></li>
-                <li><a href="index.html" class="active">Markets</a></li>
-                <li><a href="wishlist.html">Wishlist</a></li>
-            </ul>
-
-            <div class="profile-pill">
-                <div class="avatar"></div>
-                <span style="font-size: 0.8rem; font-weight: 600;">Profile</span>
-            </div>
-        </nav>
-
-        <div class="container">
-            <header class="py-16">
-                <h1 class="text-4xl font-bold">Explore Market</h1>
-                <p class="text-zinc-400 mt-2">Discover resources with fellow AASTU students</p>
-            </header>
-
-            <div id="market-list" class="grid grid-cols-1 md:grid-cols-3 gap-8 mb-20">
-                <p>Loading market items...</p>
-            </div>
+    <div class="container">
+        <header class="page-header">
+            <h1>Explore Market</h1>
+            <p style="color: var(--color-muted);">Discover resources with fellow AASTU students</p>
+        </header>
+        <div id="market-list" class="market-grid">
+            <!-- Data injected here -->
         </div>
     </div>
 
     <script src="market-script.js"></script>
-    <script>
-        document.addEventListener('DOMContentLoaded', () => {
-            if (typeof loadMarketItems === 'function') {
-                loadMarketItems();
-            }
-        });
-    </script>
+    <script>document.addEventListener('DOMContentLoaded', loadMarketItems);</script>
 </body>
 </html>
