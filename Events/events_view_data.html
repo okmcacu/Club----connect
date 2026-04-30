@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Events Hub</title>
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
+    <style>
+        body { background: #f0f2f5; font-family: sans-serif; padding: 20px; }
+        .grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(360px, 1fr)); gap: 24px; }
+        .card { background: white; border-radius: 15px; overflow: hidden; box-shadow: 0 4px 15px rgba(0,0,0,0.05); position: relative; }
+        .type-tag { position: absolute; top: 15px; left: 15px; background: #6366f1; color: white; padding: 6px 14px; border-radius: 20px; font-size: 0.7rem; font-weight: bold; z-index: 5; }
+        .img-header { height: 200px; background: #eee; }
+        .img-header img { width: 100%; height: 100%; object-fit: cover; }
+        .content { padding: 20px; }
+        .event-title { font-size: 1.5rem; font-weight: 800; margin: 0; }
+        .mini-desc { color: #6366f1; font-weight: 600; margin-bottom: 15px; font-style: italic; }
+        .meta-row { display: flex; gap: 15px; font-size: 0.85rem; border-top: 1px solid #eee; padding-top: 10px; margin-top: 10px; color: #4b5563; }
+        .footer-info { font-size: 0.85rem; color: #6b7280; padding: 15px 20px; border-top: 1px solid #f3f4f6; background: #fafafa; }
+        .del-btn { width: 100%; padding: 14px; background: #ef4444; color: white; border: none; cursor: pointer; font-weight: bold; }
+    </style>
+</head>
+<body>
+    <div id="eventGrid" class="grid">Loading events...</div>
+
+    <script>
+        const _supabase = supabase.createClient("https://wsbzipduafiuwqvmjjxi.supabase.co", "sb_publishable_WvATkOwadGEY59I3gfn8Tw_vA5wpiM0");
+
+        async function loadEvents() {
+            const { data: events } = await _supabase.from('Events').select('*').order('date', { ascending: true });
+            const grid = document.getElementById('eventGrid');
+            
+            grid.innerHTML = events.map(event => {
+                const img = (Array.isArray(event.image_url) && event.image_url.length > 0) ? event.image_url[0] : '';
+
+                return `
+                <div class="card" id="event-${event.id}">
+                    <div class="type-tag">${event.type || 'Event'}</div>
+                    <div class="img-header"><img src="${img || 'https://via.placeholder.com/400x200'}"></div>
+                    <div class="content">
+                        <h2 class="event-title">${event.title}</h2>
+                        <div class="mini-desc">${event.mini_description || ''}</div>
+                        <div class="meta-row"><span>📅 ${event.date || 'TBD'}</span><span>⏰ ${event.time || ''}</span></div>
+                        <div style="font-size:0.9rem; margin-top:10px; line-height:1.5;">${marked.parse(event.description || '')}</div>
+                    </div>
+                    <div class="footer-info">
+                        <strong>Organizer:</strong> ${event.organizer || 'Unknown'}<br>
+                        <strong>📍 Location:</strong> ${event.location || 'See Description'}
+                    </div>
+                    <button class="del-btn" onclick="removeEvent(${event.id}, '${img}')">Delete Event</button>
+                </div>`;
+            }).join('');
+        }
+
+        async function removeEvent(id, imgUrl) {
+            if (!confirm("Delete this event?")) return;
+            try {
+                if (imgUrl) {
+                    const fileName = imgUrl.split('/').pop();
+                    await _supabase.storage.from('events').remove([fileName]);
+                }
+                await _supabase.from('Events').delete().eq('id', id);
+                document.getElementById(`event-${id}`).remove();
+            } catch (err) { alert(err.message); }
+        }
+        loadEvents();
+    </script>
+</body>
+</html>

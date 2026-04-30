@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Post New Event</title>
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <style>
+        body { font-family: -apple-system, sans-serif; max-width: 700px; margin: 40px auto; padding: 20px; background: #f8f9fa; }
+        .form-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 15px; background: white; padding: 30px; border-radius: 12px; box-shadow: 0 4px 20px rgba(0,0,0,0.08); }
+        .field { display: flex; flex-direction: column; }
+        .full { grid-column: span 2; }
+        label { font-weight: 600; font-size: 0.85rem; margin-bottom: 6px; color: #444; }
+        input, textarea { padding: 12px; border: 1px solid #ddd; border-radius: 8px; font-size: 1rem; }
+        button { grid-column: span 2; padding: 16px; background: #6366f1; color: white; border: none; border-radius: 8px; cursor: pointer; font-weight: bold; font-size: 1rem; margin-top: 10px; }
+        button:disabled { background: #a5a6f6; }
+    </style>
+</head>
+<body>
+    <h2 style="text-align: center;">Create New Event</h2>
+    <form id="eventForm" class="form-grid">
+        <div class="field full"><label>Event Title</label><input type="text" id="title" required></div>
+        <div class="field full"><label>Mini Description</label><input type="text" id="mini_description" placeholder="A catchy one-liner"></div>
+        <div class="field full"><label>Detailed Description</label><textarea id="description" rows="3"></textarea></div>
+        
+        <div class="field"><label>Date</label><input type="date" id="date"></div>
+        <div class="field"><label>Time</label><input type="time" id="time"></div>
+        
+        <div class="field"><label>Location</label><input type="text" id="location"></div>
+        <div class="field"><label>Organizer</label><input type="text" id="organizer"></div>
+        
+        <div class="field full"><label>Event Type</label><input type="text" id="type" placeholder="e.g. Workshop, Social"></div>
+        <div class="field full"><label>Entry Requirements</label><input type="text" id="entry_requirements"></div>
+        <div class="field full"><label>Event Poster</label><input type="file" id="img" accept="image/*"></div>
+        
+        <button type="submit" id="submitBtn">Create Event</button>
+    </form>
+
+    <script>
+        const _supabase = supabase.createClient("https://wsbzipduafiuwqvmjjxi.supabase.co", "sb_publishable_WvATkOwadGEY59I3gfn8Tw_vA5wpiM0");
+
+        async function upload(file) {
+            if (!file) return null;
+            const name = `${Date.now()}-${file.name.replace(/\s+/g, '_')}`;
+            const { error } = await _supabase.storage.from('events').upload(name, file);
+            if (error) throw error;
+            return _supabase.storage.from('events').getPublicUrl(name).data.publicUrl;
+        }
+
+        document.getElementById('eventForm').addEventListener('submit', async (e) => {
+            e.preventDefault();
+            const btn = document.getElementById('submitBtn');
+            btn.disabled = true;
+
+            try {
+                const url = await upload(document.getElementById('img').files[0]);
+
+                const { error } = await _supabase.from('Events').insert([{
+                    title: document.getElementById('title').value,
+                    mini_description: document.getElementById('mini_description').value,
+                    description: document.getElementById('description').value,
+                    date: document.getElementById('date').value,
+                    time: document.getElementById('time').value,
+                    location: document.getElementById('location').value,
+                    organizer: document.getElementById('organizer').value,
+                    type: document.getElementById('type').value,
+                    entry_requirements: document.getElementById('entry_requirements').value,
+                    image_url: url ? [url] : [] 
+                }]);
+
+                if (error) throw error;
+                alert("Event Posted!");
+                e.target.reset();
+            } catch (err) { alert(err.message); } finally { btn.disabled = false; }
+        });
+    </script>
+</body>
+</html>
