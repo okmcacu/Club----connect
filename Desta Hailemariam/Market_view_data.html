@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Marketplace</title>
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
+    <style>
+        body { background: #f0f2f5; font-family: sans-serif; padding: 20px; }
+        .grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(340px, 1fr)); gap: 24px; }
+        .card { background: white; border-radius: 12px; overflow: hidden; box-shadow: 0 4px 12px rgba(0,0,0,0.06); position: relative; }
+        
+        /* Status Badge (Top Corner) */
+        .status-pill { position: absolute; top: 10px; right: 10px; padding: 4px 10px; border-radius: 20px; font-size: 0.7rem; font-weight: bold; text-transform: uppercase; color: white; z-index: 10; }
+        .active { background: #3ecf8e; } .sold { background: #ff4757; } .pending { background: #ffa502; }
+
+        .img-header { display: flex; height: 180px; background: #eee; }
+        .img-header img { width: 50%; height: 100%; object-fit: cover; border-right: 1px solid #fff; }
+        
+        .content { padding: 20px; }
+        .short-desc { text-align: center; font-weight: 800; color: #3ecf8e; margin-bottom: 8px; font-size: 0.85rem; text-transform: uppercase; letter-spacing: 1px; }
+        
+        .price-row { display: flex; justify-content: space-between; align-items: center; margin: 10px 0; }
+        .price { color: #2ecc71; font-size: 1.5rem; font-weight: 800; }
+        .cond-badge { background: #f1f3f5; padding: 3px 8px; border-radius: 4px; font-size: 0.75rem; color: #666; font-weight: 600; }
+
+        .verified-badge { display: inline-flex; width: 14px; height: 14px; background: #1d9bf0; border-radius: 50%; margin-left: 5px; vertical-align: middle; box-shadow: 0 0 0 1px #fff; }
+        .verified-badge::after { content: ''; width: 3px; height: 6px; border: solid white; border-width: 0 2px 2px 0; transform: rotate(45deg); margin-top: -2px; display: block; margin-left: 5px; }
+        
+        .desc { font-size: 0.92rem; color: #444; line-height: 1.5; border-top: 1px solid #eee; margin-top: 12px; padding-top: 12px; }
+        
+        .footer-info { background: #fcfcfc; padding: 15px; border-top: 1px solid #eee; font-size: 0.82rem; color: #777; }
+        .del-btn { width: 100%; padding: 12px; background: #ff4757; color: white; border: none; cursor: pointer; font-weight: bold; }
+    </style>
+</head>
+<body>
+    <div id="marketGrid" class="grid">Loading Listings...</div>
+
+    <script>
+        const _supabase = supabase.createClient("https://wsbzipduafiuwqvmjjxi.supabase.co", "sb_publishable_WvATkOwadGEY59I3gfn8Tw_vA5wpiM0");
+
+        async function loadItems() {
+            const { data: items } = await _supabase.from('Market').select('*').order('created_at', { ascending: false });
+            const grid = document.getElementById('marketGrid');
+            
+            grid.innerHTML = items.map(item => {
+                const img2 = Array.isArray(item.image2_urls) ? item.image2_urls[0] : '';
+                const badge = item.verified === 'yes' ? '<span class="verified-badge"></span>' : '';
+
+                return `
+                <div class="card" id="item-${item.id}">
+                    <div class="status-pill ${item.status}">${item.status}</div>
+                    <div class="img-header">
+                        <img src="${item.image_urls || 'https://via.placeholder.com/300'}">
+                        <img src="${img2 || 'https://via.placeholder.com/300'}">
+                    </div>
+                    <div class="content">
+                        <div class="short-desc">${item.short_description || ''}</div>
+                        <h3 style="margin: 0; text-align: center;">${item.title}</h3>
+                        <div class="price-row">
+                            <span class="price">${item.price}  ETB</span>
+                            <span class="cond-badge">${item.condition}</span>
+                        </div>
+                        <div class="desc">${marked.parse(item.description || '')}</div>
+                    </div>
+                    <div class="footer-info">
+                        <strong>Seller:</strong> ${item.seller_name}${badge}<br>
+                        <strong>Qty:</strong> ${item.quantity || 1} units available<br>
+                        <strong>loc:</strong> ${item.address || 'Contact for info'}<br>
+                        <strong>Phone:</strong> ${item.phone || 'N/A'}
+                    </div>
+                    <button class="del-btn" onclick="removeItem(${item.id}, '${item.image_urls}', '${img2}')">Delete Listing</button>
+                </div>`;
+            }).join('');
+        }
+
+        async function removeItem(id, url1, url2) {
+            if (!confirm("Delete?")) return;
+            const getFile = (url) => (url && url.includes('Market/')) ? url.split('/').pop() : null;
+            const files = [getFile(url1), getFile(url2)].filter(Boolean);
+            if (files.length > 0) await _supabase.storage.from('Market').remove(files);
+            await _supabase.from('Market').delete().eq('id', id);
+            document.getElementById(`item-${id}`).remove();
+        }
+
+        loadItems();
+    </script>
+</body>
+</html>

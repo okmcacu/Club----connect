@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>My Events - ClubConnect</title>
+  <link rel="stylesheet" href="base.css" />
+  <style>
+    nav { background: #0a0a0a; border-bottom: 1px solid rgba(255,255,255,0.08); position: sticky; top: 0; z-index: 100; }
+    .nav-container { max-width: 1200px; margin: 0 auto; padding: 1rem 1.5rem; display: flex; justify-content: space-between; align-items: center; }
+    .logo { font-size: 1.55rem; font-weight: 700; color: var(--color-primary); }
+    .nav-links { display: flex; gap: 2.25rem; list-style: none; }
+    .nav-links a { font-weight: 500; }
+    .nav-links a:hover, .nav-links a.active { color: var(--color-primary); }
+  </style>
+</head>
+<body>
+
+  <nav>
+    <div class="nav-container">
+      <div class="logo">CLUB <span style="color:#00d4aa;">--</span>CONNECT</div>
+      <ul class="nav-links">
+        <li><a href="events.html">Events</a></li>
+        <li><a href="myevents.html" class="active">My Events</a></li>
+      </ul>
+      <div style="display:flex; align-items:center; gap:0.6rem; color:#ddd;">
+        <div style="width:34px;height:34px;background:#00d4aa;color:#000;border-radius:50%;display:flex;align-items:center;justify-content:center;font-weight:700;">👤</div>
+        Profile
+      </div>
+    </div>
+  </nav>
+
+  <div class="container" style="padding: 4rem 0;">
+    <h1 style="font-size: 2.8rem; margin-bottom: 0.5rem;">My Events</h1>
+    <p style="color: var(--color-text-muted);">Your saved schedule</p>
+
+    <div id="my-events-list" style="margin-top: 3rem; display: grid; gap: 2rem;">
+      <!-- Populated by JS -->
+    </div>
+  </div>
+
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+  <script src="app.js"></script>
+</body>
+</html>
