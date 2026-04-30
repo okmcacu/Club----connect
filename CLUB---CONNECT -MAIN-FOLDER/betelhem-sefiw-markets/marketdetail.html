@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Detail | Club Connect</title>
+    <link rel="stylesheet" href="base.css">
+    <!-- 1. Supabase -->
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <!-- 2. Markdown Parser (CRITICAL) -->
+    <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
+</head>
+<body>
+    <!-- 3. The ID MUST be exactly this -->
+    <div id="product-detail-container" class="container">
+        <p>Loading...</p>
+    </div>
+
+    <!-- 4. Your Logic File -->
+    <script src="market-script.js"></script>
+    <script>
+        // Use a timeout to ensure everything is loaded
+        window.onload = () => {
+            if (typeof loadProductDetail === 'function') {
+                loadProductDetail();
+            } else {
+                console.error("market-script.js failed to load!");
+            }
+        };
+    </script>
+</body>
+</html>
