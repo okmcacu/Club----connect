@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Edit Profile</title>
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap');
+        :root {
+            --color-primary: #00d4aa;
+            --color-bg-main: #09090b;
+            --color-bg-secondary: #18181b;
+            --color-text-main: #ffffff;
+            --color-text-muted: #a1a1aa;
+            --radius-main: 1.5rem;
+        }
+        * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Inter', sans-serif; }
+        body { background-color: var(--color-bg-main); color: var(--color-text-main); display: flex; align-items: center; justify-content: center; min-height: 100vh; padding: 20px; }
+        .edit-card { background: var(--color-bg-secondary); padding: 2.5rem; border-radius: var(--radius-main); border: 1px solid rgba(255,255,255,0.05); width: 100%; max-width: 500px; }
+        label { display: block; font-size: 0.85rem; margin-bottom: 0.5rem; color: var(--color-text-muted); }
+        input, textarea { width: 100%; background: var(--color-bg-main); border: 1px solid rgba(255,255,255,0.1); border-radius: 0.75rem; padding: 0.85rem; color: white; margin-bottom: 1.25rem; }
+        .btn-save { width: 100%; background: var(--color-primary); color: black; padding: 1rem; border-radius: 9999px; font-weight: 700; cursor: pointer; border: none; }
+    </style>
+</head>
+<body>
+
+<div class="edit-card">
+    <h1 style="margin-bottom: 1.5rem; font-size: 1.5rem;">Edit Profile</h1>
+    <form id="editForm">
+        <label>Name</label><input type="text" id="name" required>
+        <label>Year</label><input type="text" id="year">
+        <label>Department</label><input type="text" id="department">
+        <label>Bio</label><textarea id="bio" rows="3"></textarea>
+        <button type="submit" class="btn-save" id="saveBtn">Save Changes</button>
+    </form>
+</div>
+
+<script>
+    const _supabase = supabase.createClient("https://wsbzipduafiuwqvmjjxi.supabase.co", "sb_publishable_WvATkOwadGEY59I3gfn8Tw_vA5wpiM0");
+    const profileId = new URLSearchParams(window.location.search).get('id');
+
+    async function load() {
+        const { data } = await _supabase.from('Profile').select('*').eq('id', profileId).single();
+        if (data) {
+            document.getElementById('name').value = data.name;
+            document.getElementById('year').value = data.year;
+            document.getElementById('department').value = data.department;
+            document.getElementById('bio').value = data.Bio;
+        }
+    }
+
+    document.getElementById('editForm').addEventListener('submit', async (e) => {
+        e.preventDefault();
+        const btn = document.getElementById('saveBtn');
+        btn.innerText = "Saving...";
+        
+        const { error } = await _supabase.from('Profile').update({
+            name: document.getElementById('name').value,
+            year: document.getElementById('year').value,
+            department: document.getElementById('department').value,
+            Bio: document.getElementById('bio').value
+        }).eq('id', profileId);
+
+        if (error) alert(error.message);
+        else window.location.href = "view_profiles.html";
+    });
+
+    load();
+</script>
+</body>
+</html>

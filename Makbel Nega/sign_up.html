@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sign Up | Create Profile</title>
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap');
+        :root {
+            --color-primary: #00d4aa;
+            --color-bg-main: #09090b;
+            --color-bg-secondary: #18181b;
+            --color-text-main: #ffffff;
+            --color-text-muted: #a1a1aa;
+            --radius-main: 1.5rem;
+        }
+        * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Inter', sans-serif; }
+        body { background-color: var(--color-bg-main); color: var(--color-text-main); display: flex; align-items: center; justify-content: center; min-height: 100vh; padding: 20px; }
+        
+        .signup-card { background: var(--color-bg-secondary); padding: 2.5rem; border-radius: var(--radius-main); border: 1px solid rgba(255,255,255,0.05); width: 100%; max-width: 500px; }
+        .header { margin-bottom: 2rem; text-align: center; }
+        .header h1 { font-size: 1.8rem; font-weight: 700; margin-bottom: 0.5rem; }
+        .header p { color: var(--color-text-muted); font-size: 0.9rem; }
+
+        .form-group { margin-bottom: 1.25rem; }
+        label { display: block; font-size: 0.85rem; font-weight: 500; margin-bottom: 0.5rem; color: var(--color-text-muted); }
+        
+        input, textarea {
+            width: 100%; background: var(--color-bg-main); border: 1px solid rgba(255,255,255,0.1);
+            border-radius: 0.75rem; padding: 0.85rem; color: white; font-size: 1rem; transition: 0.3s;
+        }
+        input:focus, textarea:focus { border-color: var(--color-primary); }
+        
+        .btn-submit { 
+            width: 100%; background: var(--color-primary); color: black; padding: 1rem; 
+            border-radius: 9999px; font-weight: 700; margin-top: 1rem; transition: 0.3s; cursor: pointer;
+        }
+        .btn-submit:hover { opacity: 0.9; transform: translateY(-2px); }
+    </style>
+</head>
+<body>
+
+<div class="signup-card">
+    <div class="header">
+        <h1>Join the Community</h1>
+        <p>Enter your details to create your profile</p>
+    </div>
+
+    <form id="profileForm">
+        <div class="form-group">
+            <label>Full Name</label>
+            <input type="text" id="name" required>
+        </div>
+        
+        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1rem;">
+            <div class="form-group">
+                <label>Year</label>
+                <input type="text" id="year">
+            </div>
+            <div class="form-group">
+                <label>Department</label>
+                <input type="text" id="department">
+            </div>
+        </div>
+
+        <div class="form-group">
+            <label>Phone Number</label>
+            <input type="number" id="phone">
+        </div>
+
+        <div class="form-group">
+            <label>Bio</label>
+            <textarea id="bio" rows="2"></textarea>
+        </div>
+
+        <div class="form-group">
+            <label>Social Media URL</label>
+            <input type="text" id="social_media" placeholder="https://instagram.com/...">
+        </div>
+
+        <div class="form-group">
+            <label>Profile Image</label>
+            <input type="file" id="pfp" accept="image/*">
+        </div>
+
+        <button type="submit" id="submitBtn" class="btn-submit">Sign Up</button>
+    </form>
+</div>
+
+<script>
+    const _supabase = supabase.createClient("https://wsbzipduafiuwqvmjjxi.supabase.co", "sb_publishable_WvATkOwadGEY59I3gfn8Tw_vA5wpiM0");
+
+    async function uploadImage(file) {
+        if (!file) return null;
+        const fileName = `profiles/${Date.now()}-${file.name.replace(/\s+/g, '_')}`;
+        const { error } = await _supabase.storage.from('Market').upload(fileName, file);
+        if (error) throw error;
+        return _supabase.storage.from('Market').getPublicUrl(fileName).data.publicUrl;
+    }
+
+    document.getElementById('profileForm').addEventListener('submit', async (e) => {
+        e.preventDefault();
+        const btn = document.getElementById('submitBtn');
+        btn.disabled = true;
+        btn.innerText = "Creating Profile...";
+
+        try {
+            const imgFile = document.getElementById('pfp').files[0];
+            const pfpUrl = await uploadImage(imgFile);
+
+            const { error } = await _supabase.from('Profile').insert([{
+                name: document.getElementById('name').value,
+                year: document.getElementById('year').value,
+                department: document.getElementById('department').value,
+                phone: document.getElementById('phone').value,
+                Bio: document.getElementById('bio').value,
+                social_media: document.getElementById('social_media').value,
+                image_url: pfpUrl
+            }]);
+
+            if (error) throw error;
+            alert("Success!");
+            window.location.href = "view_profiles.html";
+        } catch (err) {
+            alert(err.message);
+        } finally {
+            btn.disabled = false;
+            btn.innerText = "Sign Up";
+        }
+    });
+</script>
+</body>
+</html>

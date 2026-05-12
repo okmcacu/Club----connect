@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Directory | Profiles</title>
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap');
+        :root {
+            --color-primary: #00d4aa;
+            --color-bg-main: #09090b;
+            --color-bg-secondary: #18181b;
+            --color-text-main: #ffffff;
+            --color-text-muted: #a1a1aa;
+            --radius-main: 1.5rem;
+        }
+        * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Inter', sans-serif; }
+        body { background-color: var(--color-bg-main); color: var(--color-text-main); padding: 50px 20px; }
+        .container { max-width: 1200px; margin: 0 auto; }
+        
+        .grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(320px, 1fr)); gap: 2rem; margin-top: 3rem; }
+        
+        .profile-card { 
+            background: var(--color-bg-secondary); border-radius: var(--radius-main); 
+            padding: 2rem; border: 1px solid rgba(255,255,255,0.05); text-align: center;
+            transition: all 0.3s ease; position: relative;
+        }
+        .profile-card:hover { transform: translateY(-8px); border-color: var(--color-primary); }
+
+        .pfp { width: 110px; height: 110px; border-radius: 50%; object-fit: cover; margin: 0 auto 1.5rem; border: 3px solid var(--color-primary); }
+        .name { font-size: 1.4rem; font-weight: 700; margin-bottom: 0.25rem; }
+        .info { font-size: 0.85rem; color: var(--color-primary); font-weight: 600; margin-bottom: 1rem; text-transform: uppercase; letter-spacing: 0.5px; }
+        .bio { font-size: 0.95rem; color: var(--color-text-muted); line-height: 1.6; margin-bottom: 1.5rem; min-height: 3em; }
+        
+        .actions { display: flex; gap: 10px; margin-top: 20px; }
+        .btn { flex: 1; padding: 0.75rem; border-radius: 999px; font-size: 0.85rem; font-weight: 600; cursor: pointer; transition: 0.3s; border: none; }
+        .btn-edit { background: #3f3f46; color: white; }
+        .btn-delete { background: #ef4444; color: white; }
+        .btn:hover { opacity: 0.8; }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <div style="text-align: center;">
+        <h1 style="font-size: 2.5rem; margin-bottom: 0.5rem;">Community Directory</h1>
+        <p style="color: var(--color-text-muted);">View, edit, or manage member profiles</p>
+    </div>
+
+    <div id="profilesGrid" class="grid">Loading profiles...</div>
+</div>
+
+<script>
+    const _supabase = supabase.createClient("https://wsbzipduafiuwqvmjjxi.supabase.co", "sb_publishable_WvATkOwadGEY59I3gfn8Tw_vA5wpiM0");
+
+    async function fetchProfiles() {
+        const { data, error } = await _supabase.from('Profile').select('*').order('created_at', { ascending: false });
+        const grid = document.getElementById('profilesGrid');
+        
+        if (error) { grid.innerHTML = "Error loading profiles."; return; }
+
+        grid.innerHTML = data.map(u => `
+            <div class="profile-card" id="card-${u.id}">
+                <img src="${u.image_url || 'https://via.placeholder.com/150'}" class="pfp">
+                <h2 class="name">${u.name}</h2>
+                <div class="info">${u.year || ''} • ${u.department || ''}</div>
+                <p class="bio">${u.Bio || 'No bio shared.'}</p>
+                <div class="actions">
+                    <button class="btn btn-edit" onclick="window.location.href='edit_profile.html?id=${u.id}'">Edit</button>
+                    <button class="btn btn-delete" onclick="handleDelete(${u.id}, '${u.image_url}')">Delete</button>
+                </div>
+            </div>
+        `).join('');
+    }
+
+    async function handleDelete(id, imgUrl) {
+        if (!confirm("Permanently delete this profile?")) return;
+        try {
+            if (imgUrl) {
+                const fileName = imgUrl.split('/').pop();
+                await _supabase.storage.from('Market').remove([`profiles/${fileName}`]);
+            }
+            const { error } = await _supabase.from('Profile').delete().eq('id', id);
+            if (error) throw error;
+            document.getElementById(`card-${id}`).remove();
+        } catch (e) { alert(e.message); }
+    }
+
+    fetchProfiles();
+</script>
+</body>
+</html>
