@@ -1,0 +1,34 @@
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Club Connect - Marketplace</title>
+    <link rel="stylesheet" href="clubhouse.css">
+    <!-- Dgit add .
+     ependencies -->
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
+</head>
+<body>
+
+    <div class="container">
+        <!-- Navigation Tabs based on image_efb79c.png -->
+        <nav class="tabs">
+            <button class="tab-btn active" id="marketTab" onclick="switchTab('market')">Markets</button>
+            <button class="tab-btn" id="wishlistTab" onclick="switchTab('wishlist')">Wishlist (<span id="wish-count">0</span>)</button>
+        </nav>
+
+        <!-- Market Section -->
+        <section id="market-section">
+            <div id="marketGrid" class="grid">Loading Market Listings...</div>
+        </section>
+
+        <!-- Wishlist Section -->
+        <section id="wishlist-section" class="hidden">
+            <div id="wishlistGrid" class="grid">Your wishlist is empty.</div>
+        </section>
+    </div>
+
+    <script src="clubhouse.js"></script>
+</body>
+</html>
